@@ -2,4 +2,4 @@
 **/*.pyc
 member/migrations
 .idea
-
+db.sqlite3
