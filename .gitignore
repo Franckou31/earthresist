@@ -1,3 +1,5 @@
-toto.csv
+*.csv
 **/*.pyc
 member/migrations
+.idea
+

@@ -8,32 +8,41 @@ from datetime import date
 
 class Campagne(models.Model):
     nom = models.CharField(max_length=200)
-    def __str__(self):
-        return str(self.nom)
+    def __unicode__(self):
+        return self.nom
 
 class Don(models.Model):
     TYPE_PAIEMENT = (
         ('ES', 'Espece'),
         ('CK', 'Cheque'),
+        ('HA', 'HelloAsso'),
     )
     TYPE_DON = (
         ('Don unique', 'Don unique'),
         ('Don mensuel', 'Don mensuel'),
         ('Adhesion', 'Adhesion'),
     )
+    ORIGIN_DON = (
+        ('HelloAsso', 'HelloAsso'),
+        ('SiteWeb', 'SiteWeb'),
+    )
 
-    type_don = models.CharField(blank=True, max_length=20, choices=TYPE_DON)
-    date = models.DateField(default=date.today)
-    montant = models.IntegerField(default=0)
-    type_paiement = models.CharField(blank=True, max_length=2, choices=TYPE_PAIEMENT)
-    member = models.ForeignKey(
-        'Member',
+    num_hello_asso = models.IntegerField(default=0)
+    origin_don = models.CharField(blank=True, max_length=10, choices=ORIGIN_DON)
+    campagne = models.ForeignKey(
+        'Campagne',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
-    campagne = models.ForeignKey(
-        'Campagne',
+    type_don = models.CharField(blank=True, max_length=20, choices=TYPE_DON)
+    date = models.DateField(default=date.today)
+    montant = models.IntegerField(default=0)
+    attestation_hello_asso = models.CharField(blank=True, max_length=300)
+
+    type_paiement = models.CharField(blank=True, max_length=2, choices=TYPE_PAIEMENT)
+    member = models.ForeignKey(
+        'Member',
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -54,5 +63,5 @@ class Member(models.Model):
     pays = models.CharField(max_length=50)
     telephone = models.CharField(max_length=20)
 
-    def __str__(self):
+    def __unicode__(self):
         return self.prenom + " " + self.nom
