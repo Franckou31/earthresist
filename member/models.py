@@ -20,7 +20,7 @@ class Don(models.Model):
     TYPE_DON = (
         ('Don unique', 'Don unique'),
         ('Don mensuel', 'Don mensuel'),
-        ('Adhesion', 'Adhesion'),
+        (u'Adhésion', u'Adhésion'),
     )
     ORIGIN_DON = (
         ('HelloAsso', 'HelloAsso'),

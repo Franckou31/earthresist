@@ -6,24 +6,6 @@ from datetime import datetime
 import csv
 
 
-# https://stackoverflow.com/questions/904041/reading-a-utf8-csv-file-with-python
-def unicode_csv_reader(unicode_csv_data, dialect=csv.excel, **kwargs):
-    # csv.py doesn't do Unicode; encode temporarily as UTF-8:
-    csv_reader = csv.reader(unicode_csv_data,
-                            dialect=dialect, **kwargs)
-    row_number = 0
-    for row in csv_reader:
-        row_number += 1
-        # decode iso-8859-1 back to Unicode, cell by cell:
-        if row_number > 1:
-            yield [unicode(cell, 'iso-8859-1') for cell in row]
-
-
-def utf_8_encoder(unicode_csv_data):
-    for line in unicode_csv_data:
-        yield line.encode('utf-8')
-
-
 class Command(BaseCommand):
     help = 'Ce script importe les membres et les dons'
 
@@ -102,6 +84,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         import_file = options['csvfile']
         self.stdout.write('csvfile ' + import_file)
-        with open(import_file) as f:
-            row = unicode_csv_reader(f, delimiter=';')
+        with open(import_file, encoding="iso-8859-1") as f:
+            row = csv.reader(f, delimiter=';')
+            # skip header
+            next(row)
             self.process_row(row)
