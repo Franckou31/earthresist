@@ -8,7 +8,7 @@ from datetime import date
 
 class Campagne(models.Model):
     nom = models.CharField(max_length=200)
-    def __unicode__(self):
+    def __str__(self):
         return self.nom
 
 class Don(models.Model):
