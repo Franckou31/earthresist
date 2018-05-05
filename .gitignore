@@ -3,3 +3,4 @@
 member/migrations
 .idea
 db.sqlite3
+earthresist/settings/prod.py
