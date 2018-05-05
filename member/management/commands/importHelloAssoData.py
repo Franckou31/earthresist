@@ -38,12 +38,9 @@ class Command(BaseCommand):
             new_member.pays = row[23]
             self.stdout.write(row[2])
             if(row[2] == u'Adhésion'):
-                self.stdout.write('oui')
                 new_member.adherent = True
-            else:
-                self.stdout.write('non')
-                new_member.adherent = False
-            new_member.benevole = False
+            elif('don' in row[2].lower()):
+                new_member.donateur = True
 
             new_member.save()
             return new_member

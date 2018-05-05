@@ -8,6 +8,7 @@ from datetime import date
 
 class Campagne(models.Model):
     nom = models.CharField(max_length=200)
+    date = models.DateField(default=date.today)
     def __str__(self):
         return self.nom
 
@@ -51,17 +52,47 @@ class Don(models.Model):
     def __str__(self):
         return str(self.montant)
 
+class Competence(models.Model):
+    nom = models.CharField(max_length=50)
+    def __str__(self):
+        return str(self.nom)
+
 class Member(models.Model):
+    CIVILITE = (
+        ('Mme', 'Madame'),
+        ('Mr', 'Monsieur'),
+    )
+    # infos generale
+    civilite = models.CharField(blank=True, max_length=10, choices=CIVILITE)
     nom = models.CharField(max_length=50)
     prenom = models.CharField(max_length=50)
-    email = models.EmailField(max_length=100)
-    adherent = models.BooleanField()
-    benevole = models.BooleanField()
-    adresse = models.TextField()
-    code_postal = models.CharField(max_length=5)
-    ville = models.CharField(max_length=50)
-    pays = models.CharField(max_length=50)
-    telephone = models.CharField(max_length=20)
+    email = models.EmailField(max_length=100, unique=True)
+    # type membre
+    adherent = models.BooleanField(default=False)
+    benevole = models.BooleanField(default=False)
+    donateur = models.BooleanField(default=False)
+    militant = models.BooleanField(default=False)
+    activiste = models.BooleanField(default=False)
+    # newletter O/N
+    newsletter = models.BooleanField(default=False)
+    # Informer prochaines actions O/N
+    informaction = models.BooleanField(default=False)
+    # Adresse
+    adresse = models.TextField(blank=True)
+    code_postal = models.CharField(max_length=5, blank=True)
+    ville = models.CharField(max_length=50, blank=True)
+    pays = models.CharField(max_length=50, blank=True)
+    telephone = models.CharField(max_length=20, blank=True)
+    # Competence
+    competences = models.ManyToManyField(Competence, blank=True)
+    # Date lieu creation membre
+    campagne = models.ForeignKey(
+        'Campagne',
+        on_delete=models.SET_NULL,
+        blank=True,
+        null=True,
+    )
 
     def __unicode__(self):
         return self.prenom + " " + self.nom
+

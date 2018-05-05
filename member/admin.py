@@ -3,23 +3,33 @@ from __future__ import unicode_literals
 
 from django.contrib import admin
 
-from .models import Member, Don, Campagne
+from .models import Member, Don, Campagne, Competence
 
 class DonInline(admin.TabularInline):
     model = Don
     extra = 1
 
+class SkillInline(admin.StackedInline):
+    model = Member.competences.through
+    extra = 1
+
 class MemberAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
-            'fields': (('nom', 'prenom'), ('email', 'telephone'), ('adherent', 'benevole')),
+            'fields': (('nom', 'prenom'), ('email', 'telephone'), ('adherent', 'donateur', 'benevole', 'militant', 'activiste')),
         }),
         ('Adresse', {
             'fields': ('adresse', ('code_postal', 'ville', 'pays')),
             'classes': ('collapse'),
         }),
+        (None, {
+            'fields': (
+            ['competences']),
+        }),
     )
-    list_display = ('nom', 'prenom', 'email')
+    list_display = ('nom', 'prenom', 'email', 'adherent', 'donateur', 'benevole', 'militant', 'activiste')
+    list_editable = ('adherent', 'donateur', 'benevole', 'militant', 'activiste')
+    filter_horizontal = ['competences']
     inlines = [ DonInline ]
 
 class DonAdmin(admin.ModelAdmin):
@@ -41,3 +51,4 @@ class DonAdmin(admin.ModelAdmin):
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Don, DonAdmin)
 admin.site.register(Campagne)
+admin.site.register(Competence)
