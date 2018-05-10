@@ -92,6 +92,7 @@ class Member(models.Model):
         blank=True,
         null=True,
     )
+    commentaire = models.TextField(blank=True)
 
     def __unicode__(self):
         return self.prenom + " " + self.nom

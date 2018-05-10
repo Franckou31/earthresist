@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 import json
 
 from django.http import HttpResponse
 from django.template import loader
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 
 from .models import Member
-from .forms import MemberForm
+from .forms import MemberForm, AdhesionForm
 
 
 # sample get
 # @csrf_exempt
+@login_required
 def add_member(request):
     if request.method == 'GET':
         latest_member = Member.objects.all()[:5]
@@ -34,37 +37,28 @@ def add_member(request):
         # TODO : manage the error
         return HttpResponse("in body3")
 
+@login_required
 def index(request):
     template = loader.get_template('member/index.html')
-    context = {}
+    context = {'user': request.user}
     return HttpResponse(template.render(context, request))
-def militant(request):
-    template = loader.get_template('member/militant.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
-def benevole(request):
-    template = loader.get_template('member/benevole.html')
-    context = {}
-    return HttpResponse(template.render(context, request))
-def adhesion(request):
-    # if this is a POST request we need to process the form data
+
+@login_required
+def member(request):
     if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form = MemberForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            form.save()
-            return HttpResponseRedirect('/')
-
-    # if a GET (or any other method) we'll create a blank form
+        member_form = MemberForm(request.POST, prefix = "member")
+        adh_form = AdhesionForm(request.POST, prefix = "adhesion")
+        if member_form.is_valid() and  adh_form.is_valid():
+            new_adherent = member_form.save()
+            adh = adh_form.save(commit = False)
+            adh.member = new_adherent
+            adh.save()
+            return HttpResponseRedirect(reverse('index'))
     else:
-        form = MemberForm()
+        member_form = MemberForm(prefix = 'member')
+        adh_form = AdhesionForm(prefix = 'adhesion')
 
-    return render(request, 'member/adhesion.html', {'form': form})
+    return render(request, 'member/member.html', {'user': request.user, 'form': member_form, 'adh_form': adh_form})
 
 
-def get_member(request, member_id):
-    return HttpResponse("You're looking at member %s." % member_id)
+

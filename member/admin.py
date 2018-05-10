@@ -24,6 +24,10 @@ class MemberAdmin(admin.ModelAdmin):
         }),
         (None, {
             'fields': (
+                ['commentaire']),
+        }),
+        (None, {
+            'fields': (
             ['competences']),
         }),
     )
@@ -34,6 +38,7 @@ class MemberAdmin(admin.ModelAdmin):
 
 class DonAdmin(admin.ModelAdmin):
     list_display = ('date', 'montant', 'prenom_member', 'nom_member', 'mail_member')
+    # list_display = ('date', 'montant')
     actions_on_bottom = True
     def prenom_member(self, obj):
         return (obj.member.prenom)

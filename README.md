@@ -15,7 +15,7 @@ puis lancer le serveur de developpement django
 
 ```
 cd /home/franck/Local/Projects/django/earthresist
-python manage.py runserver
+python manage.py runserver --setting=earthresist.settings.dev
 ```
 
 Puis entrer l'URL suivante dans un browser : `http://localhost:8000`
@@ -39,8 +39,8 @@ python manage.py shell
 ### Migrer la base de données
 
 ```
-python manage.py makemigrations member
-python manage.py migrate
+python manage.py makemigrations member --setting=earthresist.settings.dev
+python manage.py migrate --setting=earthresist.settings.dev
 ```
 
 ### Post raw json data
@@ -53,4 +53,6 @@ curl -H "Content-Type: application/json" -X POST \
 
 ## urls
 
-
+```
+http://localhost:8000/api/v1.0/members/
+```

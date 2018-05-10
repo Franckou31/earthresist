@@ -1,0 +1,199 @@
+{% extends "member/base.html" %}
+
+{% load widget_tweaks %}
+
+{% block sidebarmenu %}
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+          <!-- Add icons to the links using the .nav-icon class
+               with font-awesome or any other icon font library -->
+          <li class="nav-item has-treeview menu-open">
+            <a href="#" class="nav-link active">
+              <i class="nav-icon fa fa-dashboard"></i>
+              <p>
+                Gestion des utilisateurs
+                <i class="right fa fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="member" class="nav-link active">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>Adhésion</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          {% if user.is_staff %}
+          <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fa fa-th"></i>
+              <p>
+                Administration
+                <span class="right badge badge-danger">New</span>
+              </p>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+{% endblock %}
+
+
+
+{% block contentheader %}
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">Ajouter un adhérent</h1>
+          </div><!-- /.col -->
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active">Ajouter un adhérent</li>
+            </ol>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+{% endblock %}
+    <!-- /.content-header -->
+
+{% block maincontent %}
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-8">
+            <form role="form" method="POST" action="">
+              {% csrf_token %}
+              {{ form.non_field_errors }}
+              <!-- general form elements -->
+              <div class="card card-info">
+                <div class="card-header">
+                  <h3 class="card-title">Adhérent</h3>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-2">
+                        {{ form.civilite.errors }}
+                        <label for="{{ form.civilite.id_for_label }}">Civilité</label>
+                        {{ form.civilite|add_class:"form-control" }}
+                      </div>
+                      <div class="col-5">
+                        {{ form.nom.errors }}
+                        <label for="{{ form.nom.id_for_label }}">Nom</label>
+                        {{ form.nom|add_class:"form-control"|attr:"placeholder:Nom" }}
+                      </div>
+                      <div class="col-5">
+                        {{ form.prenom.errors }}
+                        <label for="{{ form.prenom.id_for_label }}">Prénom</label>
+                        {{ form.prenom|add_class:"form-control"|attr:"placeholder:Prénom" }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-8">
+                        {{ form.email.errors }}
+                        <label for="{{ form.email.id_for_label }}">Adresse Email</label>
+                        {{ form.email|add_class:"form-control"|attr:"placeholder:Email" }}
+                      </div>
+                      <div class="col-4">
+                        {{ form.telephone.errors }}
+                        <label for="{{ form.telephone.id_for_label }}">Téléphone</label>
+                        {{ form.telephone|add_class:"form-control" }}
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="form-check">
+                          {{ form.benevole.errors }}
+                          {{ form.benevole|add_class:"form-check-input" }}
+                          <label for="{{ form.benevole.id_for_label }}">Bénévole</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          {{ form.militant.errors }}
+                          {{ form.militant|add_class:"form-check-input" }}
+                          <label for="{{ form.militant.id_for_label }}">Militant</label>
+                        </div>
+                      </div>
+                      <div class="col-4">
+                        <div class="form-check">
+                          {{ form.adherent.errors }}
+                          {{ form.adherent|add_class:"form-check-input" }}
+                          <label for="{{ form.adherent.id_for_label }}">Adhérent</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6">
+                        <div class="form-check">
+                          {{ form.newsletter.errors }}
+                          {{ form.newsletter|add_class:"form-check-input" }}
+                          <label for="{{ form.newsletter.id_for_label }}">Souhaitez-vous recevoir notre newsletter ?</label>
+                        </div>
+                      </div>
+                      <div class="col-6">
+                        <div class="form-check">
+                          {{ form.informaction.errors }}
+                          {{ form.informaction|add_class:"form-check-input" }}
+                          <label for="{{ form.informaction.id_for_label }}">Souhaitez-vous être informé.e de nos prochaines actions ?</label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      {{ form.adresse.errors }}
+                      <label>Adresse</label>
+                      {{ form.adresse|add_class:"form-control"|attr:"placeholder:Adresse ..." }}
+                    </div>
+                    <div class="row">
+                        <div class="col-4">
+                          {{ form.code_postal.errors }}
+                          <label for="{{ form.code_postal.id_for_label }}">Code Postal</label>
+                          {{ form.code_postal|add_class:"form-control"|attr:"placeholder:Code Postal" }}
+                        </div>
+                        <div class="col-4">
+                          {{ form.ville.errors }}
+                          <label for="{{ form.ville.id_for_label }}">Ville</label>
+                          {{ form.ville|add_class:"form-control"|attr:"placeholder:Ville" }}
+                        </div>
+                        <div class="col-4">
+                          {{ form.pays.errors }}
+                          <label for="{{ form.pays.id_for_label }}">Pays</label>
+                          {{ form.pays|add_class:"form-control"|attr:"placeholder:Pays" }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                      <div class="row">
+                        <div class="col-3">
+                          {{ adh_form.montant.errors }}
+                          <label for="{{ adh_form.montant.id_for_label }}">Montant adhésion</label>
+                          {{ adh_form.montant|add_class:"form-control"|attr:"placeholder:Montant" }}
+                        </div>
+                        <div class="col-3">
+                          {{ adh_form.type_paiement.errors }}
+                          <label for="{{ adh_form.type_paiement.id_for_label }}">Type paiement</label>
+                          {{ adh_form.type_paiement|add_class:"form-control" }}
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                  <!-- /.card-body -->
+
+                  <div class="card-footer">
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                  </div>
+              </div>
+              <!-- /.card -->
+            </form>
+        </div>
+
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+{% endblock %}
