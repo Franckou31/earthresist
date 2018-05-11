@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.contrib.auth.views import logout
 
 urlpatterns = [
-    url(r'^api/v1.0/members/', include('member.urls')),
+    url(r'^gestasso/', include('member.urls')),
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/login/$', auth_views.LoginView.as_view()),
+    url(r'^account/logout/$', logout, {'next_page': '/gestasso/'}, name='logout')
 ]

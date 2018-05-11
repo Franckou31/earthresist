@@ -2,6 +2,8 @@
 from __future__ import unicode_literals
 # from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
+
 import json
 
 from django.http import HttpResponse
@@ -37,7 +39,6 @@ def add_member(request):
         # TODO : manage the error
         return HttpResponse("in body3")
 
-@login_required
 def index(request):
     template = loader.get_template('member/index.html')
     context = {'user': request.user}
@@ -59,6 +60,5 @@ def member(request):
         adh_form = AdhesionForm(prefix = 'adhesion')
 
     return render(request, 'member/member.html', {'user': request.user, 'form': member_form, 'adh_form': adh_form})
-
 
 

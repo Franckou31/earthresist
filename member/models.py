@@ -4,7 +4,6 @@ from __future__ import unicode_literals
 from django.db import models
 from datetime import date
 
-# Create your models here.
 
 class Campagne(models.Model):
     nom = models.CharField(max_length=200)
@@ -58,6 +57,10 @@ class Competence(models.Model):
         return str(self.nom)
 
 class Member(models.Model):
+    class Meta:
+        permissions = (
+            ("can_only_change_comment", "Can only change comment"),
+        )
     CIVILITE = (
         ('Mme', 'Madame'),
         ('Mr', 'Monsieur'),

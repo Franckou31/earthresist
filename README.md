@@ -56,3 +56,12 @@ curl -H "Content-Type: application/json" -X POST \
 ```
 http://localhost:8000/api/v1.0/members/
 ```
+
+## Déployer une nouvelle version
+
+pull, stop, up
+
+## En prod
+pour chaque commande, entrer dans le container
+suffixer toutes les commandes par --setting=earthresist.settings.prod
+
